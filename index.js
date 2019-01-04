@@ -23,6 +23,6 @@ for (const collection of collections) {
 	Axios.get(collection.url, {
 		responseType:'stream'
 	}).then(res => {
-		res.data.pipe(fs.createWriteStream(`${process.env.LOCATION}/csv/${collection.name}.csv`))
+		res.data.pipe(fs.createWriteStream(`${process.env.OLDPWD}/csv/${collection.name}.csv`))
 	})
 }
