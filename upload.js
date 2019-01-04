@@ -42,7 +42,7 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
         for (let i = 0; i < results.data.length; i++) {
           for (let j = 0; j < results.data[i].length; j++) {
             if (results.data[i][j].length > 50000)
-              results.data[i][j] = results.data[i][j].substring()
+              results.data[i][j] = results.data[i][j].substring(0, 49999)
           }
         }
         authorize(JSON.parse(content), results.data, file.tab, appendData);
