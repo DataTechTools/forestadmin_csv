@@ -45,6 +45,13 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
               results.data[i][j] = results.data[i][j].substring(0, 49999)
           }
         }
+        if (file.name == 'instanceEnhanced') {
+          results.data = results.data.filter(d => {
+            if (d[18] == 31 || d[18] == '' || d[18] >= 1 && d[18] <=20)
+              return true
+            return false
+          })
+        }
         authorize(JSON.parse(content), results.data, file.tab, appendData);
       },
       error: function (results) {
