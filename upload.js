@@ -35,6 +35,10 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
     Papa.parse(csv_contents, {
       header: false,
       complete: function (results) {
+        if (results.data.length == 2)
+          if (results.data[1].length == 1)
+            return
+
         for (let i = 0; i < results.data.length; i++) {
           for (let j = 0; j < results.data[i].length; j++) {
             if (results.data[i][j].length > 50000)
