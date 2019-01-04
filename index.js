@@ -21,6 +21,6 @@ for (const collection of collections) {
 	Axios.get(collection.url, {
 		responseType:'stream'
 	}).then(res => {
-		res.data.pipe(fs.createWriteStream(`./csv/${collection.name}.csv`))
+		res.data.pipe(fs.createWriteStream(`/home/vrm/forestadmin_csv/csv/${collection.name}.csv`))
 	})
 }

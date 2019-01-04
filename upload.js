@@ -29,7 +29,7 @@ fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Sheets API.
   for (const file of files) {
-    let csv_contents = fs.readFileSync(`./csv/${file.name}.csv`, 'utf8');
+    let csv_contents = fs.readFileSync(`/home/vrm/forestadmin_csv/csv/${file.name}.csv`, 'utf8');
     Papa.parse(csv_contents, {
       header: false,
       complete: function (results) {
