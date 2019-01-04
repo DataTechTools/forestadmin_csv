@@ -25,7 +25,7 @@ const files = [{
 }]
 
 // Load client secrets from a local file.
-fs.readFile('credentials.json', (err, content) => {
+fs.readFile('/home/vrm/forestadmin_csv/credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Sheets API.
   for (const file of files) {
