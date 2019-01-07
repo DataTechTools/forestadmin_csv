@@ -1,4 +1,4 @@
-require('dotenv').load();
+require('dotenv').config({path: __dirname + '/.env'})
 
 const fs = require('fs');
 const readline = require('readline');
@@ -10,7 +10,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = `${process.env.OLDPWD}/token.json`;
+const TOKEN_PATH = `${process.env.LOCATION}/token.json`;
 
 const files = [{
   name: 'assistant',
@@ -27,11 +27,11 @@ const files = [{
 }]
 
 // Load client secrets from a local file.
-fs.readFile(`${process.env.OLDPWD}/credentials.json`, (err, content) => {
+fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Sheets API.
   for (const file of files) {
-    let csv_contents = fs.readFileSync(`${process.env.OLDPWD}/csv/${file.name}.csv`, 'utf8');
+    let csv_contents = fs.readFileSync(`${process.env.LOCATION}/csv/${file.name}.csv`, 'utf8');
     Papa.parse(csv_contents, {
       header: false,
       complete: function (results) {
