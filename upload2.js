@@ -13,6 +13,9 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = `${process.env.LOCATION}/token.json`;
 
 const files = [{
+  name: 'email',
+  tab: 'Email'
+},{
   name: 'assistant',
   tab: 'Assistant'
 },{
@@ -24,6 +27,12 @@ const files = [{
 },{
   name: 'user',
   tab: 'User'
+},{
+  name: 'messages',
+  tab: 'Messages'
+},{
+  name: 'messageToInstance',
+  tab: 'Messages to ITC'
 }]
 
 // Load client secrets from a local file.
@@ -108,8 +117,8 @@ function appendData(auth, data, tab) {
 	var sheets = google.sheets('v4');
 	sheets.spreadsheets.values.update({
 	  auth: auth,
-	  spreadsheetId: '1lpWk34g13kaMxwd2TWxVWFUv8VIdVBZ1EZ0OWoHLf5E',
-	  range: tab, //Change Sheet1 if your worksheet's name is something else
+	  spreadsheetId: '1Q3rM1DWYmB9F2jlyWInAxAwoi1CS3EEapqqKdU-sBM4',
+	  range: tab,
 	  valueInputOption: "USER_ENTERED",
 	  resource: {
 		  values: data

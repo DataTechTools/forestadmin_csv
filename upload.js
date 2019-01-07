@@ -13,17 +13,8 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = `${process.env.LOCATION}/token.json`;
 
 const files = [{
-  name: 'email',
-  tab: 'Email'
-},{
   name: 'instanceEnhanced',
   tab: 'Enhanceted ITC'
-},{
-  name: 'messages',
-  tab: 'Messages'
-},{
-  name: 'messageToInstance',
-  tab: 'Messages to ITC'
 }]
 
 // Load client secrets from a local file.
