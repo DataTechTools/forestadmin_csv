@@ -42,6 +42,11 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
               return true
             return false
           })
+          results.data = results.data.filter(d => {
+            if (d[20] == 'status' || d[20] != 'Completed')
+              return true
+            return false
+          })
         }
         authorize(JSON.parse(content), results.data, file.tab, appendData);
       },
