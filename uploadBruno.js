@@ -38,7 +38,7 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
         }
         if (file.name == 'instanceEnhanced') {
           results.data = results.data.filter(d => {
-            if (d[18] == 'qualification' || d[18] == 31 || d[18] == '' || d[18] >= 1 && d[18] <=20)
+            if (d[18] == 'qualification' || d[18] == 31 || d[18] >= 1 && d[18] <=20)
               return true
             return false
           })
