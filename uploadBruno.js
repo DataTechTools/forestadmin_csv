@@ -43,7 +43,7 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
             return false
           })
           results.data = results.data.filter(d => {
-            if (d[20] == 'status' || d[20] != 'Completed')
+            if (d[20] == 'status' || d[20] != 'Completed' || d[20] != 'New')
               return true
             return false
           })
