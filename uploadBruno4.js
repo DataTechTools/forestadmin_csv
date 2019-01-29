@@ -79,8 +79,8 @@ async function run() {
             results.data = results.data.map( d => {
               if (d[1] == 'created at')
                 return d
-              d[1] = moment(d[1]).format('M/D/YYYY')
-              d[2] = moment(d[2]).format('M/D/YYYY')
+              d[1] = moment(d[1]).format('M/D/YYYY HH:mm')
+              d[2] = moment(d[2]).format('M/D/YYYY HH:mm')
               d[4] = (()=> {
                 let found = users.find( u => {
                   return u[2] == d[4]
@@ -93,9 +93,9 @@ async function run() {
                 })
                 return found ? found[4] : d[5]
               })()
-              d[7] = moment(d[7]).format('M/D/YYYY')
-              d[13] = moment(d[13]).format('M/D/YYYY')
-              d[14] = moment(d[14]).format('M/D/YYYY')
+              d[7] = moment(d[7]).format('M/D/YYYY HH:mm')
+              d[13] = moment(d[13]).format('M/D/YYYY HH:mm')
+              d[14] = moment(d[14]).format('M/D/YYYY HH:mm')
               d[15] = (()=> {
                 let found = users.find( u => {
                   return u[2] == d[15]
@@ -108,7 +108,7 @@ async function run() {
                 })
                 return found ? found[2] : d[18]
               })()
-              d[24] = moment(d[24]).format('M/D/YYYY')
+              d[24] = moment(d[24]).format('M/D/YYYY HH:mm')
               return d
             })
             //remove columns
