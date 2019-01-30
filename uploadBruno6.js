@@ -36,18 +36,39 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
               results.data[i][j] = results.data[i][j].substring(0, 49999)
           }
         }
+        // Must aggregate empty columns for retrocompatibility
+        results.data[0].splice(0, 0, 'client balance')
+        results.data[0].splice(3, 0, 'url')
+        results.data[0].splice(13, 0, 'last email in')
+        results.data[0].splice(14, 0, 'last email out')
+        results.data[0].splice(21, 0, 'tennis trigger')
+        for (let i = 1; i < results.data.length; i++) {
+            results.data[i].splice(0, 0, '')
+            results.data[i].splice(3, 0, '')
+            results.data[i].splice(13, 0, '')
+            results.data[i].splice(14, 0, '')
+            results.data[i].splice(21, 0, '')
+        }
+        for (let i = 0; i < results.data.length; i++) {
+          for (let j = 0; j < results.data[i].length; j++) {
+            if (results.data[i][j].length > 50000)
+              results.data[i][j] = results.data[i][j].substring(0, 49999)
+          }
+        }
+        //Bruno's filter
         if (file.name == 'instance') {
           results.data = results.data.filter(d => {
-            if (d[14] == 'qualification' || d[14] == 31 || d[14] >= 1 && d[14] <=20)
+            if (d[18] == 'qualification' || d[18] == 31 || d[18] >= 1 && d[18] <=20)
               return true
             return false
           })
           results.data = results.data.filter(d => {
-            if (d[16] == 'status' || d[16] != 'Completed' && d[16] != 'New')
+            if (d[20] == 'status' || d[20] != 'Completed' && d[20] != 'New')
               return true
             return false
           })
         }
+        // console.log(results.data[0])
         authorize(JSON.parse(content), results.data, file.tab, appendData);
       },
       error: function (results) {
