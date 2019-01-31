@@ -117,7 +117,23 @@ function getNewToken(oAuth2Client, callback) {
 }
 
 function appendData(auth, data, tab) {
-	var sheets = google.sheets('v4');
+  var sheets = google.sheets('v4');
+  await sheets.spreadsheets.batchUpdate({
+    auth: auth,
+    spreadsheetId: spreadsheetId,
+    requestBody: {
+      requests: [
+        {
+          updateCells: {
+            range: {
+              sheetId: 0
+            },
+            fields: "*"
+          }
+        }
+      ]
+    }
+  })
 	sheets.spreadsheets.values.update({
 	  auth: auth,
 	  spreadsheetId: spreadsheetId,
