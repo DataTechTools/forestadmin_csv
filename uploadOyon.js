@@ -4,6 +4,7 @@ const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 const Papa = require('papaparse')
+const moment = require('moment')
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
@@ -11,7 +12,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = `${process.env.LOCATION}/token.json`;
-const spreadsheetId = '1ZINYJBGnnujlMvDSwetHKaAQznGkKS1FrFRDD8O00io'
+const spreadsheetId = '12tjbO1aM7cEltaQmkYl1T8UGD38W_vpC643nGtg44nc'
 
 const files = [{
   name: 'instance',
@@ -36,7 +37,7 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
             if (results.data[i][j].length > 50000)
               results.data[i][j] = results.data[i][j].substring(0, 49999)
           }
-        }
+		}
         // Must aggregate empty columns for retrocompatibility
         results.data[0].splice(0, 0, 'client balance')
         results.data[0].splice(3, 0, 'url')
@@ -49,7 +50,16 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
             results.data[i].splice(13, 0, '')
             results.data[i].splice(14, 0, '')
             results.data[i].splice(21, 0, '')
-        }
+		}
+		//filter
+		results.data = results.data.filter(d => {
+			let isCurrentDate = false
+			if (d[24] !== 'updated at')
+				isCurrentDate = moment(d[24]).isSame(moment(), "day");
+			if (d[24] == 'updated at' || isCurrentDate)
+				return true
+			return false
+		})
         authorize(JSON.parse(content), results.data, file.tab, appendData);
       },
       error: function (results) {

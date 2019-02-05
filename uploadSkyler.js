@@ -11,7 +11,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = `${process.env.LOCATION}/token.json`;
-const spreadsheetId = '1ZINYJBGnnujlMvDSwetHKaAQznGkKS1FrFRDD8O00io'
+const spreadsheetId = '1wADSZm5HxSZv-LxfCGF3r_wAzzur8q2nM1poNSOXYsU'
 
 const files = [{
   name: 'instance',
