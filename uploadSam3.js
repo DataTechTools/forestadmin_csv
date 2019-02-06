@@ -116,7 +116,7 @@ function getNewToken(oAuth2Client, callback) {
   });
 }
 
-function appendData(auth, data, tab) {
+async function appendData(auth, data, tab) {
   var sheets = google.sheets('v4');
   await sheets.spreadsheets.batchUpdate({
     auth: auth,
