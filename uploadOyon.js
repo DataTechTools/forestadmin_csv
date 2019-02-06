@@ -6,6 +6,12 @@ const {google} = require('googleapis');
 const Papa = require('papaparse')
 const moment = require('moment')
 
+Papa.parsePromise = function(file) {
+  return new Promise(function(complete, error) {
+    Papa.parse(file, {complete, error});
+  });
+};
+
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // The file token.json stores the user's access and refresh tokens, and is
@@ -19,62 +25,72 @@ const files = [{
   tab: 'ITC'
 }]
 
-// Load client secrets from a local file.
-fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
-  if (err) return console.log('Error loading client secret file:', err);
-  // Authorize a client with credentials, then call the Google Sheets API.
-  for (const file of files) {
-    let csv_contents = fs.readFileSync(`${process.env.LOCATION}/csv/${file.name}.csv`, 'utf8');
-    Papa.parse(csv_contents, {
-      header: false,
-      complete: function (results) {
-        if (results.data.length == 2)
-          if (results.data[1].length == 1)
-            return
+async function run() {
+  const csv_qualifications = fs.readFileSync(`${process.env.LOCATION}/csv/qualification.csv`, 'utf8')
+  let result = await Papa.parsePromise(csv_qualifications)
+  const qualifications = result.data
+  // Load client secrets from a local file.
+  fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Sheets API.
+    for (const file of files) {
+      let csv_contents = fs.readFileSync(`${process.env.LOCATION}/csv/${file.name}.csv`, 'utf8');
+      Papa.parse(csv_contents, {
+        header: false,
+        complete: function (results) {
+          if (results.data.length == 2)
+            if (results.data[1].length == 1)
+              return
 
-        for (let i = 0; i < results.data.length; i++) {
-          for (let j = 0; j < results.data[i].length; j++) {
-            if (results.data[i][j].length > 50000)
-              results.data[i][j] = results.data[i][j].substring(0, 49999)
+          for (let i = 0; i < results.data.length; i++) {
+            for (let j = 0; j < results.data[i].length; j++) {
+              if (results.data[i][j].length > 50000)
+                results.data[i][j] = results.data[i][j].substring(0, 49999)
+            }
           }
-		}
-        // Must aggregate empty columns for retrocompatibility
-        results.data[0].splice(0, 0, 'client balance')
-        results.data[0].splice(3, 0, 'url')
-        results.data[0].splice(13, 0, 'last email in')
-        results.data[0].splice(14, 0, 'last email out')
-        results.data[0].splice(21, 0, 'tennis trigger')
-        for (let i = 1; i < results.data.length; i++) {
-            results.data[i].splice(0, 0, '')
-            results.data[i].splice(3, 0, '')
-            results.data[i].splice(13, 0, '')
-            results.data[i].splice(14, 0, '')
-            results.data[i].splice(21, 0, '')
-		}
-		//filter
-		results.data = results.data.filter(d => {
-			let isCurrentDate = false
-			if (d[24] !== 'updated at')
-				isCurrentDate = moment(d[24]).isSame(moment(), "day");
-			if (d[24] == 'updated at' || isCurrentDate)
-				return true
-			return false
-		})
-        authorize(JSON.parse(content), results.data, file.tab, appendData);
-      },
-      error: function (results) {
-        console.log('error')
-      }
-    })
-  }
-});
-
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
+          // Must aggregate empty columns for retrocompatibility
+          results.data[0].splice(0, 0, 'client balance')
+          results.data[0].splice(3, 0, 'url')
+          results.data[0].splice(13, 0, 'last email in')
+          results.data[0].splice(14, 0, 'last email out')
+          results.data[0].splice(21, 0, 'tennis trigger')
+          for (let i = 1; i < results.data.length; i++) {
+              results.data[i].splice(0, 0, '')
+              results.data[i].splice(3, 0, '')
+              results.data[i].splice(13, 0, '')
+              results.data[i].splice(14, 0, '')
+              results.data[i].splice(21, 0, '')
+          }
+          //filter
+          results.data = results.data.filter(d => {
+            let isCurrentDate = false
+            if (d[24] !== 'updated at')
+              isCurrentDate = moment(d[24]).isSame(moment(), "day");
+            if (d[24] == 'updated at' || isCurrentDate)
+              return true
+            return false
+          })
+          //parse data
+          results.data = results.data.map( d => {
+            if (d[1] == 'created at')
+              return d
+            d[18] = (()=> {
+              let found = qualifications.find( u => {
+                return u[3] == d[18]
+              })
+              return found ? found[2] : d[18]
+            })()
+            return d
+          })
+          authorize(JSON.parse(content), results.data, file.tab, appendData);
+        },
+        error: function (results) {
+          console.log('error')
+        }
+      })
+    }
+  });
+}
 function authorize(credentials, data, tab, callback) {
   const {client_secret, client_id, redirect_uris} = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
@@ -88,12 +104,6 @@ function authorize(credentials, data, tab, callback) {
   });
 }
 
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback for the authorized client.
- */
 function getNewToken(oAuth2Client, callback) {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
@@ -154,3 +164,5 @@ async function appendData(auth, data, tab) {
 	  }
 	});
 }
+
+run()
