@@ -194,10 +194,10 @@ async function run() {
       }
     }, (err, response) => {
       if (err) {
-        console.log('The API returned an error: ' + err);
+        console.log('uploadBruno4: The API returned an error: ' + err);
         return;
       } else {
-        console.log("Appended " + tab);
+        console.log("uploadBruno4: Appended " + tab);
       }
     });
   }

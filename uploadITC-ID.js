@@ -161,10 +161,10 @@ async function appendData(auth, data, tab) {
         }
       }, (err, response) => {
         if (err) {
-          console.log('The API returned an error: ' + err);
+          console.log('uploadITC-ID: The API returned an error: ' + err);
           return;
         } else {
-          console.log("Appended " + tab);
+          console.log("uploadITC-ID: Appended " + tab);
         }
       });
     }

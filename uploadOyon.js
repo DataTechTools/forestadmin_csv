@@ -147,10 +147,10 @@ async function appendData(auth, data, tab) {
 	  }
 	}, (err, response) => {
 	  if (err) {
-      console.log('The API returned an error: ' + err);
+      console.log('uploadOyon: The API returned an error: ' + err);
       return;
 	  } else {
-		  console.log("Appended " + tab);
+		  console.log("uploadOyon: Appended " + tab);
 	  }
 	});
 }

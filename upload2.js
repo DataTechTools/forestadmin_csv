@@ -125,10 +125,10 @@ function appendData(auth, data, tab) {
 	  }
 	}, (err, response) => {
 	  if (err) {
-      console.log('The API returned an error: ' + err);
+      console.log('upload2: The API returned an error: ' + err);
       return;
 	  } else {
-		  console.log("Appended " + tab);
+		  console.log("upload2: Appended " + tab);
 	  }
 	});
 }
