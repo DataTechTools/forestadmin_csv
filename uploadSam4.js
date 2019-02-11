@@ -11,7 +11,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = `${process.env.LOCATION}/token.json`;
-const spreadsheetId = '1ZINYJBGnnujlMvDSwetHKaAQznGkKS1FrFRDD8O00io'
+const spreadsheetId = '1ExBpFBEMYOTAHK-drd_KHXKHhTvlZZKL6vfPjW-NrWc'
 
 const files = [{
   name: 'instance',
@@ -111,22 +111,26 @@ function getNewToken(oAuth2Client, callback) {
 
 async function appendData(auth, data, tab) {
   var sheets = google.sheets('v4');
-  await sheets.spreadsheets.batchUpdate({
-    auth: auth,
-    spreadsheetId: spreadsheetId,
-    requestBody: {
-      requests: [
-        {
-          updateCells: {
-            range: {
-              sheetId: 0
-            },
-            fields: "*"
+  try {
+    await sheets.spreadsheets.batchUpdate({
+      auth: auth,
+      spreadsheetId: spreadsheetId,
+      requestBody: {
+        requests: [
+          {
+            updateCells: {
+              range: {
+                sheetId: 0
+              },
+              fields: "*"
+            }
           }
-        }
-      ]
-    }
-  })
+        ]
+      }
+    })
+  } catch (error) {
+    console.log('uploadSam4', error)
+  }
 	sheets.spreadsheets.values.update({
 	  auth: auth,
 	  spreadsheetId: spreadsheetId,

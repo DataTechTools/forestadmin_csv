@@ -11,6 +11,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = `${process.env.LOCATION}/token.json`;
+const spreadsheetId = '1g-OgACgUUEN0LUMZLT4zEi2SAASSbhlvwDsKb8roe5U'
 
 const files = [{
   name: 'instanceEnhanced',
@@ -99,7 +100,7 @@ function appendData(auth, data, tab) {
 	var sheets = google.sheets('v4');
 	sheets.spreadsheets.values.update({
 	  auth: auth,
-	  spreadsheetId: '1rYFw4Qq-Oz2V2MqtzQxWROK9Sb07gYG3ukAJveMbX-4',
+	  spreadsheetId: spreadsheetId,
 	  range: tab, //Change Sheet1 if your worksheet's name is something else
 	  valueInputOption: "USER_ENTERED",
 	  resource: {
