@@ -11,11 +11,11 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = `${process.env.LOCATION}/token.json`;
-const spreadsheetId = '1g-OgACgUUEN0LUMZLT4zEi2SAASSbhlvwDsKb8roe5U'
+const spreadsheetId = '1CAKbk14Uj0xz389a9EZjr8wYvoRBLGKU_WKrOpqTFQY'
 
 const files = [{
   name: 'instanceEnhanced',
-  tab: 'Enhanceted ITC'
+  tab: 'Enhanced ITC'
 }]
 
 // Load client secrets from a local file.
@@ -37,6 +37,11 @@ fs.readFile(`${process.env.LOCATION}/credentials.json`, (err, content) => {
               results.data[i][j] = results.data[i][j].substring(0, 49999)
           }
         }
+        results.data = results.data.filter(d => {
+          if (d[18] == 'qualification' || d[18] >= 25 && d[18] <= 30)
+            return true
+          return false
+        })
         authorize(JSON.parse(content), results.data, file.tab, appendData);
       },
       error: function (results) {
