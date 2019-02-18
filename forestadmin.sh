@@ -4,7 +4,6 @@ node /home/vrm/forestadmin_csv/uploadBruno
 node /home/vrm/forestadmin_csv/uploadBruno4
 node /home/vrm/forestadmin_csv/uploadBruno6
 node /home/vrm/forestadmin_csv/uploadITC-ID
-node /home/vrm/forestadmin_csv/uploadJesus
 node /home/vrm/forestadmin_csv/uploadOyon
 node /home/vrm/forestadmin_csv/uploadSam2
 node /home/vrm/forestadmin_csv/uploadSam3
