@@ -1,5 +1,4 @@
-require('dotenv').config()
-
+require('dotenv').config({ path: __dirname + '/../.env'})
 const fs = require('fs')
 const moment = require('moment')
 const {google} = require('googleapis')
@@ -35,7 +34,8 @@ async function appendData(auth, spreadsheetId, data, tab) {
 		})
 		console.log('uploadJesus: Updated ' + tab)
 	} catch (error) {
-		console.log(error)
+		console.log('error' + tab)
+		console.log(error.response.data)
 	}
 }
 
@@ -130,6 +130,7 @@ async function run() {
 			.select('p.name as user')
 			.join('users as u', 'u.id', 'te.userId')
 			.join('profiles as p', 'p.id', 'u.profileId')
+			.whereNull('te.deletedAt')
 			.orderBy(['instanceId', 'userId', 'createdAt'])
 
 		for (let time of timeEntries) {
@@ -149,7 +150,7 @@ async function run() {
 		spreadsheetId = '1LJojenfBt0k4rAZS4-mfT4saa04TLguQF-2pr7lBHys'
 		authorize(JSON.parse(credentials), spreadsheetId, timesArray, 'timeEntry2', appendData)
 	} catch (error) {
-		console.log(error)
+		 console.log('err general')
 	}
 	pg.destroy()
 }
