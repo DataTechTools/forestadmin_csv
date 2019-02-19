@@ -27,7 +27,7 @@ async function appendData(auth, spreadsheetId, data, tab) {
 		await sheets.spreadsheets.values.update({
 			spreadsheetId: spreadsheetId,
 			range: tab, //Change Sheet1 if your worksheet's name is something else
-			valueInputOption: "USER_ENTERED",
+			valueInputOption: 'RAW',
 			resource: {
 				values: data
 			}
